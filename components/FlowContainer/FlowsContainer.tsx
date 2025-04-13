@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../Loading/Loading";
 import FlowItem from "../FlowItem/FlowItem";
 
-export default function flowsContainer() {
+export default function FlowsContainer() {
   const { data, isLoading } = useQuery<Flow[]>({
     queryKey: ["flows"],
     queryFn: getflowsFn,
