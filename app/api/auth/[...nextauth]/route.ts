@@ -1,4 +1,4 @@
-import { prisma } from "@/prisma/db"; // ⚠️ Altere se seu prisma estiver em outro caminho
+import { prisma } from "@/prisma/db";
 import { compare } from "bcrypt";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -6,17 +6,21 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma), // 🔗 Usa o PrismaAdapter para login via Google funcionar com ID numérico
+  adapter: PrismaAdapter(prisma),
 
   session: {
-    strategy: "jwt",
+    strategy: "database",
   },
 
   providers: [
     CredentialsProvider({
       name: "Sign in",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "example@example.com" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "example@example.com",
+        },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -28,10 +32,13 @@ export const authOptions: NextAuthOptions = {
 
         if (!user || !user.password) return null;
 
-        const isPasswordValid = await compare(credentials.password, user.password);
+        const isPasswordValid = await compare(
+          credentials.password,
+          user.password
+        );
         if (!isPasswordValid || !user.active) return null;
 
-        return user; // ⚠️ Retorna o objeto inteiro com id:number
+        return user;
       },
     }),
 
@@ -44,7 +51,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.userId = (user as any).id; // 👈 Salva o id do banco no token
+        token.userId = (user as any).id;
       }
       return token;
     },
@@ -62,7 +69,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-// 👇 Tipagem do session.user.id como number
 declare module "next-auth" {
   interface Session {
     user: {
