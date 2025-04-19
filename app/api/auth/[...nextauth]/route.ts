@@ -6,21 +6,17 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma), 
 
   session: {
-    strategy: "database",
+    strategy: "jwt",
   },
 
   providers: [
     CredentialsProvider({
       name: "Sign in",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "example@example.com",
-        },
+        email: { label: "Email", type: "email", placeholder: "example@example.com" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -32,10 +28,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!user || !user.password) return null;
 
-        const isPasswordValid = await compare(
-          credentials.password,
-          user.password
-        );
+        const isPasswordValid = await compare(credentials.password, user.password);
         if (!isPasswordValid || !user.active) return null;
 
         return user;
@@ -51,7 +44,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.userId = (user as any).id;
+        token.userId = (user as any).id; 
       }
       return token;
     },
