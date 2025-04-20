@@ -1,29 +1,30 @@
-import { prisma } from '@/prisma/db'
-import { hash } from 'bcrypt'
+import { prisma } from "@/prisma/db";
+import { hash } from "bcrypt";
 
 export async function POST(req: Request) {
-  const { name, email, password } = await req.json()
+  const { name, email, password } = await req.json();
 
   if (!name || !email || !password) {
     return new Response(
-      'Request failed with non-existing with non-existing data(Email,Name,Password)',
+      "Request failed with non-existing with non-existing data(Email,Name,Password)",
       { status: 412 }
-    )
+    );
   }
 
-  const cyrptedPassword = await hash(password, 12)
+  const cyrptedPassword = await hash(password, 12);
 
   try {
     const user = await prisma.user.create({
       data: {
         name: name,
         email: email,
-        password: cyrptedPassword
-      }
-    })
+        password: cyrptedPassword,
+      },
+    });
 
-    return new Response(JSON.stringify(user), { status: 201 })
+    return new Response(JSON.stringify(user), { status: 201 });
   } catch (error) {
-    return new Response('Failed to create user', { status: 500 })
+    console.error("[REGISTER_ERROR]", error); // MOSTRA O ERRO NOS LOGS DA VERCEL
+    return new Response("Failed to create user", { status: 500 });
   }
 }
