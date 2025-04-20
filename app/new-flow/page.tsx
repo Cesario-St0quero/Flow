@@ -69,8 +69,8 @@ export default function NewflowPage() {
           <option value='' disabled>
             Selecione Importância
           </option>
-          <option value='important'>Important</option>
-          <option value='not-important'>Not Important</option>
+          <option value='important'>Importante</option>
+          <option value='not-important'>Não Importante</option>
         </select>
         <div className='flex gap-1 justify-end'>
           <Link href='..' className='btn-primary'>
