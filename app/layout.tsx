@@ -32,7 +32,7 @@ export default async function RootLayout({
           <h1 className="text-2xl text-center uppercase text-black font-semibold">
             <Link href={AppRoutes.Home}>
               <Image src={NextSvg} width={80} alt="Next" />
-              flows
+              flow
             </Link>
           </h1>
           <Nav session={session} />
