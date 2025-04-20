@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     return new Response(JSON.stringify(user), { status: 201 });
   } catch (error) {
-    console.error("[REGISTER_ERROR]", error); // MOSTRA O ERRO NOS LOGS DA VERCEL
+    console.error("[REGISTER_ERROR]", error);
     return new Response("Failed to create user", { status: 500 });
   }
 }
