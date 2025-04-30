@@ -16,6 +16,7 @@ export const metadata = {
   description: "Daniel e Cesario",
 };
 
+
 export default async function RootLayout({
   children,
 }: {
